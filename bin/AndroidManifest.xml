@@ -42,6 +42,34 @@
             android:name=".UploadActivity"
             android:label="@string/title_activity_upload" >
         </activity>
+		 <activity
+		      android:name="com.example.Cherry.Home.LoginActivity"
+            android:label="@string/title_activity_login" >
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+
+            -->
+        </activity>
+		 <activity
+            android:name="com.example.Cherry.Home.RegisterActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
+ 
+        <activity
+            android:name="com.example.Cherry.Home.FindPasswordActivity"
+            android:label="@string/title_activity_find_password" >
+           <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+        </activity>
     </application>
 
 </manifest>

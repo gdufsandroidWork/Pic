@@ -1,0 +1,104 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LoginLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LoginActivity" >
+
+    <RelativeLayout
+        android:id="@+id/login_div"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:background="#55FFFFFF"
+        android:padding="10dip" >
+
+        <TextView
+            android:id="@+id/account_input_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/account_input_string" />
+
+        <EditText
+            android:id="@+id/account_input_editView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_input_textView"
+            android:layout_marginTop="5dp"
+            android:ems="20"
+            android:hint="@string/account_hit_string"
+            android:textSize="15sp" 
+            android:drawableLeft="@drawable/user_account"/>
+
+        <TextView
+            android:id="@+id/password_input_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_input_editView"
+            android:layout_marginTop="8dp"
+            android:text="@string/password_input_string" />
+
+        <EditText
+            android:id="@+id/password_input_editView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password_input_textView"
+            android:layout_marginTop="5dp"
+            android:ems="20"
+            android:inputType="textPassword" 
+            android:textSize="15sp"
+            android:drawableLeft="@drawable/user_password"/>
+
+        <TextView
+            android:id="@+id/findPassword_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password_input_editView"
+            android:layout_alignLeft="@id/password_input_editView"
+            android:layout_marginTop="5dp"
+            android:text="@string/login_findPassword_link"
+            android:textColorLink="@color/darkred" />
+
+        <CheckBox
+            android:id="@+id/remeber_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/findPassword_link"
+            android:layout_marginTop="8dp"
+            android:text="@string/login_remeberPassword_string" />
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignRight="@+id/password_input_editView"
+            android:layout_below="@id/findPassword_link"
+            android:layout_marginTop="8dp"
+            android:background="@color/aliceblue"
+            android:text="@string/login_Btn_string"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/register_div"
+        android:layout_width="fill_parent"
+        android:layout_height="146dp"
+        android:layout_margin="10dip"
+        android:background="#55FFFFFF"
+        android:padding="10dip" >
+
+        <TextView
+            android:id="@+id/register_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_register_link"
+            android:textColorLink="@color/darkred" />
+    </RelativeLayout>
+
+</LinearLayout>
