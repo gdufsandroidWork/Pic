@@ -6,11 +6,12 @@ import java.util.List;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -24,10 +25,17 @@ public class ViewpagerActivity extends FragmentActivity {
 	private List<View> listViews; // Tab页面列表
 	private ImageView cursor;// 动画图片
 	private TextView t1, t2, t3, t4;// 页卡头标
+	private Fragment1 mFragment1;
+	private Fragment2 mFragment2;
+	private Fragment3 mFragment3;
+	private Fragment4 mFragment4;
+	private List<Fragment> mListFragment = new ArrayList<Fragment>();
+	private PagerAdapter mPgAdapter;
 	private int offset = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
 	private int bmpW;// 动画图片宽度
-	private int screenW;
+	private int ascreenW;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,27 +59,25 @@ public class ViewpagerActivity extends FragmentActivity {
 		t2.setOnClickListener(new MyOnClickListener(1));
 		t3.setOnClickListener(new MyOnClickListener(2));
 		t4.setOnClickListener(new MyOnClickListener(3));
+
 	}
-	
+
 	/**
-     * 初始化动画
-     */
-    private void InitImageView() {
-        cursor = (ImageView) findViewById(R.id.cursor);
-        bmpW = BitmapFactory.decodeResource(getResources(), R.drawable.cursor)
-                .getWidth();// 获取图片宽度
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        screenW = dm.widthPixels/listViews.size();// 获取分辨率宽度
-        if(bmpW>screenW){
-        	cursor.getLayoutParams().width=screenW;
-        	bmpW=screenW;
-        }
-        offset = (screenW - bmpW) / 2;// 计算偏移量 
-        Matrix matrix = new Matrix();
-        matrix.postTranslate(offset, 0);
-        cursor.setImageMatrix(matrix);// 设置动画初始位置
-    }
+	 * 初始化动画
+	 */
+	private void InitImageView() {
+		cursor = (ImageView) findViewById(R.id.cursor);
+		bmpW = BitmapFactory.decodeResource(getResources(), R.drawable.cursor)
+				.getWidth();// 获取图片宽度
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int screenW = dm.widthPixels;// 获取分辨率宽度
+		ascreenW = screenW / 4;
+		offset = (screenW / 3 - bmpW) / 2;// 计算偏移量
+		Matrix matrix = new Matrix();
+		matrix.postTranslate(offset, 0);
+		cursor.setImageMatrix(matrix);// 设置动画初始位置
+	}
 
 	public class MyOnClickListener implements OnClickListener {
 
@@ -94,12 +100,17 @@ public class ViewpagerActivity extends FragmentActivity {
 	private void InitViewPager() {
 		mPager = (ViewPager) findViewById(R.id.vPager);
 		listViews = new ArrayList<View>();
-		LayoutInflater mInflater = getLayoutInflater();
-		listViews.add(mInflater.inflate(R.layout.lay1, null));
-		listViews.add(mInflater.inflate(R.layout.lay2, null));
-		listViews.add(mInflater.inflate(R.layout.lay3, null));
-		listViews.add(mInflater.inflate(R.layout.lay4, null));
-		mPager.setAdapter(new MyPagerAdapter(listViews));
+		mFragment1 = new Fragment1();
+		mFragment2 = new Fragment2();
+		mFragment3 = new Fragment3();
+		mFragment4 = new Fragment4();
+		mListFragment.add(mFragment1);
+		mListFragment.add(mFragment2);
+		mListFragment.add(mFragment3);
+		mListFragment.add(mFragment4);
+		mPgAdapter = new ViewPagerAdapter(getSupportFragmentManager(),
+				mListFragment);
+		mPager.setAdapter(mPgAdapter);
 		mPager.setCurrentItem(0);
 		mPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	}
@@ -109,53 +120,37 @@ public class ViewpagerActivity extends FragmentActivity {
 	 */
 	public class MyOnPageChangeListener implements OnPageChangeListener {
 
-//		int one = offset * 2 + bmpW;// 页卡1 -> 页卡2 偏移量
-//		int two = one * 2;// 页卡1 -> 页卡3 偏移量
-//		int three = one * 3;// 页卡1 -> 页卡4 偏移量
+		// int one=offset*2+bmpW;
+		// int two = one * 2;// 页卡1 -> 页卡3 偏移量
+		// int three = one * 3;// 页卡1 -> 页卡4 偏移量
 
 		@Override
 		public void onPageSelected(int arg0) {
+			// int one = offset * 3 + bmpW;// 页卡1 -> 页卡2 偏移量
 			Animation animation = null;
-			/*switch (arg0) {
-			case 0:
-				if (currIndex == 1) {
-					animation = new TranslateAnimation(one, 0, 0, 0);
-				} else if (currIndex == 2) {
-					animation = new TranslateAnimation(two, 0, 0, 0);
-				}else if(currIndex==3){
-					animation = new TranslateAnimation(three, 0, 0, 0);
-				}
-				break;
-			case 1:
-				if (currIndex == 0) {
-					animation = new TranslateAnimation(offset, one, 0, 0);
-				} else if (currIndex == 2) {
-					animation = new TranslateAnimation(two, one, 0, 0);
-				}else if(currIndex==3){
-					animation = new TranslateAnimation(three, one, 0, 0);
-				}
-				break;
-			case 2:
-				if (currIndex == 0) {
-					animation = new TranslateAnimation(offset, two, 0, 0);
-				} else if (currIndex == 1) {
-					animation = new TranslateAnimation(one, two, 0, 0);
-				}else if(currIndex==3){
-					animation = new TranslateAnimation(three, two, 0, 0);
-				}
-				break;
-			case 3:
-				if (currIndex == 0) {
-					animation = new TranslateAnimation(offset, three, 0, 0);
-				} else if (currIndex == 1) {
-					animation = new TranslateAnimation(one, three, 0, 0);
-				}else if(currIndex==2){
-					animation = new TranslateAnimation(two, three, 0, 0);
-				}
-				break;
-			}*/
-//			animation = new TranslateAnimation(one*currIndex, one*arg0, 0, 0);//显然这个比较简洁，只有一行代码。  
-			animation = new TranslateAnimation(screenW * currIndex, screenW * arg0 , 0, 0);
+			/*
+			 * switch (arg0) { case 0: if (currIndex == 1) { animation = new
+			 * TranslateAnimation(one, 0, 0, 0); } else if (currIndex == 2) {
+			 * animation = new TranslateAnimation(two, 0, 0, 0); }else
+			 * if(currIndex==3){ animation = new TranslateAnimation(three, 0, 0,
+			 * 0); } break; case 1: if (currIndex == 0) { animation = new
+			 * TranslateAnimation(offset, one, 0, 0); } else if (currIndex == 2)
+			 * { animation = new TranslateAnimation(two, one, 0, 0); }else
+			 * if(currIndex==3){ animation = new TranslateAnimation(three, one,
+			 * 0, 0); } break; case 2: if (currIndex == 0) { animation = new
+			 * TranslateAnimation(offset, two, 0, 0); } else if (currIndex == 1)
+			 * { animation = new TranslateAnimation(one, two, 0, 0); }else
+			 * if(currIndex==3){ animation = new TranslateAnimation(three, two,
+			 * 0, 0); } break; case 3: if (currIndex == 0) { animation = new
+			 * TranslateAnimation(offset, three, 0, 0); } else if (currIndex ==
+			 * 1) { animation = new TranslateAnimation(one, three, 0, 0); }else
+			 * if(currIndex==2){ animation = new TranslateAnimation(two, three,
+			 * 0, 0); } break; }
+			 */
+			// animation = new TranslateAnimation(one*currIndex, one*arg0, 0,
+			// 0);//显然这个比较简洁，只有一行代码。
+			animation = new TranslateAnimation(ascreenW * currIndex, ascreenW
+					* arg0, 0, 0);
 			currIndex = arg0;
 			animation.setFillAfter(true);// True:图片停在动画结束位置
 			animation.setDuration(300);
@@ -170,4 +165,5 @@ public class ViewpagerActivity extends FragmentActivity {
 		public void onPageScrollStateChanged(int arg0) {
 		}
 	}
+
 }
